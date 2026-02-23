@@ -12,6 +12,6 @@ const courseProgressSchema = new mongoose.Schema({
             ref:"SubSection",
         }
     ]
-}, {timestamps:true})
+}, {timestamps:true});
 
 module.exports = mongoose.model("CourseProgress" , courseProgressSchema);
