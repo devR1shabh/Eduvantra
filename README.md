@@ -1,4 +1,4 @@
-# EduVantra
+# Eduvantra
 
 ![MERN](https://img.shields.io/badge/Stack-MERN-2ea44f?style=for-the-badge)
 ![React](https://img.shields.io/badge/Frontend-React%20%2B%20Vite-61dafb?style=for-the-badge&logo=react&logoColor=111)
