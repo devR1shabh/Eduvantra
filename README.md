@@ -139,9 +139,9 @@ Backend: `http://localhost:4000`
 ## Screenshots
 
 
-| Home | Course Details | Dashboard |
+| Home | Signup Page | Course Details |
 | --- | --- | --- |
-| Screenshot placeholder | Screenshot placeholder | Screenshot placeholder |
+| ![](./screenshots/home.png) | ![](./screenshots/signup.png) | ![](./screenshots/Coursepage.png) |
 
 ## Future Improvements
 
@@ -153,5 +153,7 @@ Backend: `http://localhost:4000`
 
 ## Author
 
-**Rishabh**  
-GitHub: [devR1shabh](https://github.com/devR1shabh)
+*Rishabh*  
+GitHub: [devR1shabh](https://github.com/devR1shabh)  
+LinkedIn: [Rishabh Vyas](https://www.linkedin.com/in/rishabhvyas-dev)  
+Email: rishavyas74@gmail.com
