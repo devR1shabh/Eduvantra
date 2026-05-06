@@ -28,8 +28,10 @@ app.use(cookieParser());
 app.use(cors({
   origin: [
     "http://localhost:3000",
+    "http://localhost:5173",
+    process.env.FRONTEND_URL,
     "https://eduvantra.vercel.app"
-  ],
+  ].filter(Boolean),
   credentials: true
 }));
 app.use(
@@ -60,5 +62,4 @@ app.get("/",(req,res)=>{
 app.listen(PORT,() =>{
     console.log(`app is running at ${PORT}`)
 })
-
 

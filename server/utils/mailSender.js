@@ -1,10 +1,13 @@
 const nodemailer = require("nodemailer");
-require('dotenv').config;
+require("dotenv").config();
 
 const mailSender = async (email ,title ,body) => {
     try{
+        const port = Number(process.env.MAIL_PORT) || 587;
         let transporter = nodemailer.createTransport({
             host:process.env.MAIL_HOST,
+            port,
+            secure: port === 465,
             auth:{
                 user:process.env.MAIL_USER,
                 pass:process.env.MAIL_PASS,
@@ -12,7 +15,7 @@ const mailSender = async (email ,title ,body) => {
         })
 
         let info = await transporter.sendMail({
-            from:'StudyNotion',
+            from:`"EduVantra" <${process.env.MAIL_USER}>`,
             to:`${email}`,
             subject:`${title}`,
             html:`${body}`,
@@ -23,6 +26,7 @@ const mailSender = async (email ,title ,body) => {
     }
     catch(error){
         console.log(error.message);
+        throw error;
 
     }
 }

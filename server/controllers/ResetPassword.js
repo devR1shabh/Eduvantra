@@ -1,12 +1,19 @@
 const User = require("../models/User");
 const mailSender = require("../utils/mailSender");
 const bcrypt = require("bcryptjs");
+const crypto = require("crypto");
 
 //resetPasswordToken
 exports.resetPasswordToken = async (req,res) =>{
     try{
         //get email from request body
         const email = req.body.email;
+        if(!email){
+            return res.status(400).json({
+                success:false,
+                message:"Email is required",
+            });
+        }
 
         //check user exists for this email or not ,email validation
         const user = await User.findOne({email:email});
@@ -21,13 +28,24 @@ exports.resetPasswordToken = async (req,res) =>{
         const token = crypto.randomUUID();
         
         //update user by adding token and expiration time
-        const updatedDetails = await User.findOneAndUpdate({email:email},{token:token,resetPasswordExpires:Date.now() + 5*60*1000},{new:true});
+        await User.findOneAndUpdate({email:email},{token:token,resetPasswordExpires:Date.now() + 5*60*1000},{new:true});
 
         //create url
-        const url = `http://localhost:3000/update-password/${token}`;
+        const frontendUrl =
+            req.get("origin") ||
+            process.env.FRONTEND_URL ||
+            process.env.CLIENT_URL ||
+            "http://localhost:5173";
+        const url = `${frontendUrl.replace(/\/$/, "")}/update-password/${token}`;
 
         //send mail containing the url
-        await mailSender(email,"password reset link",`Password reset link ${url}`);
+        await mailSender(
+            email,
+            "Password Reset Link",
+            `<p>Click the link below to reset your EduVantra password:</p>
+             <p><a href="${url}">${url}</a></p>
+             <p>This link will expire in 5 minutes.</p>`
+        );
 
         //return response
         return res.status(200).json({
@@ -82,7 +100,10 @@ exports.resetPassword = async(req,res) =>{
         //password update
         await User.findOneAndUpdate(
             {token:token},
-            {password:hashedpassword},
+            {
+                $set:{password:hashedpassword},
+                $unset:{token:"", resetPasswordExpires:""},
+            },
             {new:true},
         );
 
@@ -101,4 +122,3 @@ exports.resetPassword = async(req,res) =>{
 
     };
 }
-
