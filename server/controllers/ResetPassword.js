@@ -32,9 +32,9 @@ exports.resetPasswordToken = async (req,res) =>{
 
         //create url
         const frontendUrl =
-            req.get("origin") ||
             process.env.FRONTEND_URL ||
             process.env.CLIENT_URL ||
+            req.get("origin") ||
             "http://localhost:5173";
         const url = `${frontendUrl.replace(/\/$/, "")}/update-password/${token}`;
 
