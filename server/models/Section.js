@@ -1,18 +1,17 @@
-const mongoose = require("mongoose");
+const mongoose=require("mongoose");
 
+//define the section schema 
 const sectionSchema = new mongoose.Schema({
     sectionName:{
         type:String,
-        required:true,
-        trim:true,
     },
-    subSection :[
+    subSection:[
         {
             type:mongoose.Schema.Types.ObjectId,
-            ref:"SubSection",
-        }
+            required:true,
+            ref:"subSection",
+        },
     ],
 
-} , {timestamps : true});
-
-module.exports = mongoose.model("Section" , sectionSchema);
+});
+module.exports = mongoose.model("Section",sectionSchema);

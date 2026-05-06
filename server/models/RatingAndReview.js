@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-
+//define the ratingandreview schema 
 const ratingAndReviewSchema = new mongoose.Schema({
     user:{
         type:mongoose.Schema.Types.ObjectId,
@@ -10,21 +10,21 @@ const ratingAndReviewSchema = new mongoose.Schema({
     rating:{
         type:Number,
         required:true,
-        min:1,
-        max:5,
-    },
-    course:{
-        type: mongoose.Schema.Types.ObjectId,
-        ref:"Course",
-        required:true,
     },
     review:{
         type:String,
         required:true,
-        trim:true,
     },
-} , {timestamps:true});
+    course:{
+        type:mongoose.Schema.Types.ObjectId,
+        required:true,
+        ref:"Course",
+        index:true,
 
-ratingAndReviewSchema.index({ user: 1, course: 1 }, { unique: true });
 
-module.exports = mongoose.model("RatingAndReview" , ratingAndReviewSchema);
+    },
+});
+
+//export the RatingAndReview model
+module.exports = mongoose.model("RatingAndReview",ratingAndReviewSchema);
+

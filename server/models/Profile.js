@@ -1,24 +1,23 @@
 const mongoose = require("mongoose");
 
-
+//define the profile schema 
 const profileSchema = new mongoose.Schema({
     gender:{
         type:String,
-        enum:["Male" , "Female" , "Other" , "Rather Not Say"],
     },
     dateOfBirth:{
-        type:Date,
+        type:String,
     },
     about:{
         type:String,
         trim:true,
     },
     contactNumber:{
-        type:String,
+        type:Number,
         trim:true,
-        minlength:8,
-        maxlength:15,
-    },
-}, {timestamps : true})
 
-module.exports = mongoose.model("Profile" , profileSchema);
+    },
+
+});
+
+module.exports = mongoose.model("Profile",profileSchema);
