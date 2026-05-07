@@ -9,9 +9,14 @@ const mailSender = async (email, title, body) => {
       port: 587,
       secure: false,
       requireTLS: true,
+      family: 4,
       auth: {
         user: process.env.MAIL_USER,
         pass: process.env.MAIL_PASS,
+      },
+      tls: {
+        servername: "smtp.gmail.com",
+        minVersion: "TLSv1.2",
       },
       connectionTimeout: 10_000,
       greetingTimeout: 10_000,
