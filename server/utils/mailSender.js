@@ -5,17 +5,16 @@ const mailSender = async (email, title, body) => {
   try {
 
     const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
+      host: process.env.MAIL_HOST,
       port: 587,
       secure: false,
       requireTLS: true,
-      family: 4,
       auth: {
         user: process.env.MAIL_USER,
         pass: process.env.MAIL_PASS,
       },
       tls: {
-        servername: "smtp.gmail.com",
+        servername: process.env.MAIL_HOST,
         minVersion: "TLSv1.2",
       },
       connectionTimeout: 10_000,
