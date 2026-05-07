@@ -6,24 +6,13 @@ const mailSender = async (email, title, body) => {
 
     const transporter = nodemailer.createTransport({
       host: process.env.MAIL_HOST,
-      port: 587,
+      port: process.env.MAIL_PORT,
       secure: false,
-      requireTLS: true,
       auth: {
         user: process.env.MAIL_USER,
         pass: process.env.MAIL_PASS,
       },
-      tls: {
-        servername: process.env.MAIL_HOST,
-        minVersion: "TLSv1.2",
-      },
-      connectionTimeout: 10_000,
-      greetingTimeout: 10_000,
-      socketTimeout: 20_000,
     });
-
-    await transporter.verify();
-    console.log("SMTP READY");
 
     const info = await transporter.sendMail({
       from: `"EduVantra" <${process.env.MAIL_USER}>`,
