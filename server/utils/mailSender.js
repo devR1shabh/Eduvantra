@@ -8,10 +8,14 @@ const mailSender = async (email, title, body) => {
       host: "smtp.gmail.com",
       port: 587,
       secure: false,
+      requireTLS: true,
       auth: {
         user: process.env.MAIL_USER,
         pass: process.env.MAIL_PASS,
       },
+      connectionTimeout: 10_000,
+      greetingTimeout: 10_000,
+      socketTimeout: 20_000,
     });
 
     await transporter.verify();
