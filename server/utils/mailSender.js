@@ -2,69 +2,36 @@ const nodemailer = require("nodemailer");
 require("dotenv").config();
 
 const mailSender = async (email, title, body) => {
-    try{
-        if(!process.env.MAIL_HOST || !process.env.MAIL_USER || !process.env.MAIL_PASS){
-            throw new Error("Mail service is not configured");
-        }
+  try {
 
-        const host = process.env.MAIL_HOST.trim();
-        const user = process.env.MAIL_USER.trim();
-        const pass = process.env.MAIL_PASS.trim();
-        const configuredPort = Number(process.env.MAIL_PORT);
-        const port = configuredPort || 465;
+    const transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false,
+      auth: {
+        user: process.env.MAIL_USER,
+        pass: process.env.MAIL_PASS,
+      },
+    });
 
-        const createTransporter = (smtpPort) => nodemailer.createTransport({
-            host,
-            port:smtpPort,
-            secure:smtpPort === 465,
-            requireTLS:smtpPort !== 465,
-            connectionTimeout:10000,
-            greetingTimeout:10000,
-            socketTimeout:20000,
-            tls:{
-                servername:host,
-                minVersion:"TLSv1.2",
-            },
-            auth:{
-                user,
-                pass,
-            },
-        });
+    await transporter.verify();
+    console.log("SMTP READY");
 
-        const mailOptions = {
-            from:`"EduVantra" <${user}>`,
-            to:`${email}`,
-            subject:`${title}`,
-            html:`${body}`,
-        };
+    const info = await transporter.sendMail({
+      from: `"EduVantra" <${process.env.MAIL_USER}>`,
+      to: email,
+      subject: title,
+      html: body,
+    });
 
-        let transporter = createTransporter(port);
-        let info;
+    console.log("MAIL SENT:", info.response);
 
-        try{
-            info = await transporter.sendMail(mailOptions);
-        }
-        catch(error){
-            const shouldRetryWithSecureGmail =
-                host === "smtp.gmail.com" &&
-                port !== 465 &&
-                ["ETIMEDOUT", "ECONNECTION", "ESOCKET"].includes(error.code);
+    return info;
 
-            if(!shouldRetryWithSecureGmail){
-                throw error;
-            }
-
-            transporter = createTransporter(465);
-            info = await transporter.sendMail(mailOptions);
-        }
-
-        console.log(info);
-        return info;
-    }
-    catch(error){
-        console.log(error.message);
-        throw error;
-    }
+  } catch (error) {
+    console.log("MAIL ERROR:", error);
+    throw error;
+  }
 };
 
 module.exports = mailSender;
